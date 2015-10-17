@@ -87,7 +87,6 @@ static NSString * const ShortcutDisable = @"Disable";
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     NSLog(@"App woke with fetch request");
 
-    
     [GammaController autoChangeOrangenessIfNeeded];
     
     completionHandler(UIBackgroundFetchResultNewData);
