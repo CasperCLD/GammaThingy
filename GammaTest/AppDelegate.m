@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "GammaController.h"
+#import "BackgroundTask.h"
 
 
 typedef NS_ENUM(NSInteger, GammaAction) {
@@ -56,6 +57,7 @@ static NSString * const ShortcutDisable = @"Disable";
     application.shortcutItems = @[shortcut];
 }
 
+BackgroundTask * bgTask;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [application setMinimumBackgroundFetchInterval:900]; //Wake up every 15 minutes at minimum
     
@@ -86,6 +88,12 @@ static NSString * const ShortcutDisable = @"Disable";
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     NSLog(@"App woke with fetch request");
+    
+    // TODO: check if within switch time. If so, enable the background task for an hour to frequently change the app screen temperature.
+    // TODO: when it's changed, it should stop updating.
+    //    if(bgTask == nil)
+    //        bgTask = [[BackgroundTask alloc] init];
+    //    [bgTask startBackgroundTasks:900 target:[GammaController class] selector: @selector(autoChangeOrangenessIfNeeded)];
 
     [GammaController autoChangeOrangenessIfNeeded];
     

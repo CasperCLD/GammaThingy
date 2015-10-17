@@ -6,7 +6,6 @@
 //
 
 #import "BackgroundTask.h"
-#import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
 void interruptionListenerCallback (void *inUserData, UInt32 interruptionState);

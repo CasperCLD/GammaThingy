@@ -19,7 +19,6 @@
 #import "solar.h"
 #import "brightness.h"
 #import "NSDate_compare.h"
-#import "BackgroundTask.h"
 
 typedef void *IOMobileFramebufferRef;
 
@@ -33,7 +32,6 @@ extern void SBSUndimScreen();
 
 @implementation GammaController
 
-BackgroundTask * bgTask;
 
 //This function is largely the same as the one in iomfsetgamma.c from Saurik's UIKitTools package. The license is pasted below.
 
@@ -207,14 +205,11 @@ BackgroundTask * bgTask;
     if (![defaults boolForKey:@"colorChangingEnabled"] && ![defaults boolForKey:@"colorChangingLocationEnabled"]) {
         return;
     }
-    
+    NSLog(@"Auto changing temperature if possible");
     if ([defaults boolForKey:@"colorChangingLocationEnabled"]) {
         [GammaController switchScreenTemperatureBasedOnLocation: defaults];
     } else if ([defaults boolForKey:@"colorChangingEnabled"]){
         [GammaController switchScreenTemperatureBasedOnTime: defaults];
-    }
-    if (![GammaController wakeUpScreenIfNeeded]) {
-        [bgTask startBackgroundTasks:900 target:[GammaController class] selector:autoChangeOrangenessIfNeeded];
     }
 }
 
@@ -238,8 +233,9 @@ BackgroundTask * bgTask;
     } else if (orangeness <= 0) {
         [defaults setBool:NO forKey:@"enabled"];
     }
-    
-    [GammaController setGammaWithOrangeness: orangeness];
+    if (![self wakeUpScreenIfNeeded]) { // keep the app from crashing
+        [GammaController setGammaWithOrangeness: orangeness];
+    }
 }
 
 
